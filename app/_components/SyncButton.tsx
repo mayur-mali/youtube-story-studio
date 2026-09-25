@@ -6,6 +6,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
+import { RefreshCw } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 type SyncReport = {
   ok: boolean;
@@ -17,57 +22,57 @@ type SyncReport = {
   error?: string;
 };
 
-type SyncState = "idle" | "busy" | "done" | "error";
-
-export default function SyncButton() {
+export function SyncButton() {
   const router = useRouter();
-  const [state, setState] = useState<SyncState>("idle");
-  const [report, setReport] = useState<SyncReport | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
 
   async function sync() {
-    setState("busy");
-    setReport(null);
+    setBusy(true);
+    setDone(false);
     try {
       const res = await fetch("/api/sync", { method: "POST" });
       const data: SyncReport = await res.json();
       if (data.ok) {
-        setReport(data);
-        setState("done");
+        setDone(true);
+        toast.success("Sync complete", {
+          description: `${data.stories} stories · ${data.files} files · ${data.trackerEntries} tracker rows`,
+        });
         router.refresh(); // re-render server components with the fresh Mongo data
-        window.setTimeout(() => setState("idle"), 5000);
+        window.setTimeout(() => setDone(false), 4000);
       } else {
-        setReport(data);
-        setState("error");
+        toast.error("Sync failed", { description: data.error });
       }
     } catch (e) {
-      setReport({ ok: false, error: String(e) });
-      setState("error");
+      toast.error("Sync failed", { description: String(e) });
+    } finally {
+      setBusy(false);
     }
   }
 
-  const label =
-    state === "busy" ? "सिंक हो रहा है…" : state === "done" ? "सिंक पूरा" : state === "error" ? "सिंक फेल" : "फ़ाइलों से सिंक";
-
-  const glyph = state === "busy" ? "⟳" : state === "done" ? "✓" : state === "error" ? "✕" : "↻";
-
   return (
-    <div className="syncbtn">
-      <button
-        className={`btn btn--small${state === "done" ? " syncbtn__ok" : ""}`}
-        onClick={sync}
-        disabled={state === "busy"}
-        title="Binder files (scripts/ + tracker) se studio data re-sync karo — files win"
-      >
-        <span className={`syncbtn__glyph${state === "busy" ? " syncbtn__glyph--spin" : ""}`}>{glyph}</span> {label}
-      </button>
-      {state === "done" && report && (
-        <span className="syncbtn__report">
-          {report.stories} stories · {report.files} files · {report.trackerEntries} tracker rows
-        </span>
-      )}
-      {state === "error" && report?.error && (
-        <span className="syncbtn__report syncbtn__report--error">{report.error}</span>
-      )}
-    </div>
+    <Button
+      variant={done ? "outline" : "ghost"}
+      size="sm"
+      onClick={sync}
+      disabled={busy}
+      title="Binder files (scripts/ + tracker) se studio data re-sync karo — files win"
+      className={done ? "border-brass-400/60 text-brass-300" : ""}
+    >
+      <motion.span animate={busy ? { rotate: 360 } : { rotate: 0 }} transition={busy ? { repeat: Infinity, duration: 0.9, ease: "linear" } : { duration: 0.3 }}>
+        <RefreshCw className="size-3.5" />
+      </motion.span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={done ? "done" : "idle"}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.15 }}
+        >
+          {done ? "Synced" : "Sync"}
+        </motion.span>
+      </AnimatePresence>
+    </Button>
   );
 }

@@ -1,8 +1,11 @@
 // lib/sync.ts — seeds MongoDB from the binder files (scripts/NNN_*/ + episode_tracker_v2.md).
 // Idempotent: a marker doc records the seed; /api/sync (POST) forces a re-pull from files.
+// NOTE: force-sync is refused on deployed environments without the binder folder (Vercel-safe).
 
+import fs from "fs";
+import path from "path";
 import { getDb, collections } from "./mongo";
-import { getStories, getTracker } from "./file-source";
+import { getStories, getTracker, SCRIPTS_DIR } from "./file-source";
 import type { LogEntry, EntityEntry } from "./file-source";
 
 // tracker collection holds both the tracker doc and the seed marker; _id is a string
@@ -43,6 +46,20 @@ async function doSeed(force: boolean): Promise<SyncReport> {
   const db = await getDb();
   const trackerCollection = await trackerCol();
 
+  // Deployed environments (Vercel etc.) have no binder files on disk.
+  // A force-sync there would wipe file-derived docs with nothing — so refuse.
+  if (force && !fs.existsSync(SCRIPTS_DIR)) {
+    return {
+      ok: false,
+      seeded: false,
+      stories: 0,
+      files: 0,
+      trackerEntries: 0,
+      entities: 0,
+      error: "Binder files not available in this environment — sync runs only where scripts/ folder exists (local machine).",
+    };
+  }
+
   if (!force) {
     const existing = await (await getDb()).collection(collections.stories).countDocuments();
     const marker = await (await trackerCol()).findOne({ _id: "seedMarker" });
@@ -77,9 +94,6 @@ async function doSeed(force: boolean): Promise<SyncReport> {
   );
 
   // packaging files live outside the story parser; include them if present
-  const fs = await import("fs");
-  const path = await import("path");
-  const { SCRIPTS_DIR } = await import("./file-source");
   for (const s of stories) {
     const pk = path.join(SCRIPTS_DIR, s.folder, "004_packaging.md");
     if (fs.existsSync(pk)) {

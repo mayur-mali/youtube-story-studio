@@ -1,5 +1,6 @@
 import { getStories, getTracker } from "@/lib/content";
 import { getStageFor, readPackaging } from "@/lib/tracker-store";
+import { MDiv as Reveal } from "@/components/ui/motion";
 import BoardClient from "./BoardClient";
 
 export const dynamic = "force-dynamic";
@@ -24,5 +25,15 @@ export default async function BoardPage() {
     })
   );
 
-  return <BoardClient cards={cards} />;
+  return (
+    <div className="space-y-6">
+      <Reveal initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+        <div className="text-xs uppercase tracking-[0.22em] text-night-400">
+          episode_tracker_v2.md · moving a card writes the tracker row
+        </div>
+        <h1 className="mt-1 font-deva text-4xl text-night-100">प्रोडक्शन बोर्ड</h1>
+      </Reveal>
+      <BoardClient cards={cards} />
+    </div>
+  );
 }

@@ -1,8 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion } from "motion/react";
+import { FileText, Film, Sparkles } from "lucide-react";
+
 import CopyButton from "@/app/_components/CopyButton";
 import LintPanel from "@/app/_components/LintPanel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type FileKind = "script" | "pipeline" | "prompts";
 type StoryFile = { kind: FileKind; part?: number; file: string; content: string };
@@ -33,7 +39,7 @@ function parseScript(md: string): SceneBlock[] {
       current.cues.push(line);
       continue;
     }
-    const dm = line.match(/^([\u0900-\u097F][\u0900-\u097F .'"]*)\s*:\s*(.+)$/);
+    const dm = line.match(/^([\u0900-\u097F][\u0900-\u097F .'\"]*)\s*:\s*(.+)$/);
     if (dm && !line.includes("...—")) {
       current.dialogue.push({ name: dm[1], line: dm[2] });
       continue;
@@ -45,7 +51,7 @@ function parseScript(md: string): SceneBlock[] {
   return blocks;
 }
 
-function ScriptReader({ md, folder }: { md: string; folder: string }) {
+function ScriptReader({ md, folder, canLint }: { md: string; folder: string; canLint: boolean }) {
   const blocks = useMemo(() => parseScript(md), [md]);
   return (
     <div className="paper">
@@ -67,7 +73,7 @@ function ScriptReader({ md, folder }: { md: string; folder: string }) {
           ))}
         </section>
       ))}
-      <LintPanel folder={folder} />
+      <LintPanel folder={folder} available={canLint} />
     </div>
   );
 }
@@ -98,7 +104,6 @@ function parsePrompts(md: string): PromptItem[] {
     const bullet = line.match(/^-\s+\*\*(.+?)\*\*\s*\|?\s*(.*)$/);
     const h2 = line.match(/^##\s+(.+)/);
 
-    // sub-bullet video prompt: "  - **[VIDEO PROMPT]** *(why)*: body" on its own line
     const videoBullet = line.match(/^\s*-\s+\*\*\[VIDEO PROMPT\]\*\*\s+\*\((.+?)\)\*\s*:?\s*(.*)$/);
     if (videoBullet) {
       if (cur) {
@@ -115,7 +120,7 @@ function parsePrompts(md: string): PromptItem[] {
     }
     if (bullet) {
       flush();
-      const label = bullet[1]; // e.g. RS-सूरज or S1-F1
+      const label = bullet[1];
       let rest = bullet[2];
       const videoIdx = rest.indexOf("**[VIDEO PROMPT]**");
       let video: PromptItem["video"];
@@ -359,56 +364,83 @@ function PipelineView({ md }: { md: string }) {
   );
 }
 
-export default function StoryTabs({ number, folder, files }: { number: string; folder: string; files: StoryFile[] }) {
+export default function StoryTabs({
+  number,
+  folder,
+  files,
+  canLint = true,
+}: {
+  number: string;
+  folder: string;
+  files: StoryFile[];
+  canLint?: boolean;
+}) {
   const scriptFiles = files.filter((f) => f.kind === "script");
   const promptsFile = files.find((f) => f.kind === "prompts");
   const pipelineFile = files.find((f) => f.kind === "pipeline");
 
-  const [tab, setTab] = useState<"script" | "prompts" | "pipeline">("script");
   const [part, setPart] = useState(1);
 
   const activeScript = scriptFiles.find((f) => f.part === part) ?? scriptFiles[0];
 
   return (
-    <div>
-      <div className="tabs" role="tablist">
-        <button data-active={tab === "script"} onClick={() => setTab("script")}>
-          Script{scriptFiles.length > 1 ? ` (part ${part}/${scriptFiles.length})` : ""}
-        </button>
+    <Tabs defaultValue="script">
+      <TabsList>
+        <TabsTrigger value="script">
+          <FileText /> Script{scriptFiles.length > 1 ? ` (${part}/${scriptFiles.length})` : ""}
+        </TabsTrigger>
         {promptsFile && (
-          <button data-active={tab === "prompts"} onClick={() => setTab("prompts")}>
-            Prompts
-          </button>
+          <TabsTrigger value="prompts">
+            <Sparkles /> Prompts
+          </TabsTrigger>
         )}
         {pipelineFile && (
-          <button data-active={tab === "pipeline"} onClick={() => setTab("pipeline")}>
-            Pipeline
-          </button>
+          <TabsTrigger value="pipeline">
+            <Film /> Pipeline
+          </TabsTrigger>
         )}
-      </div>
+      </TabsList>
 
-      {tab === "script" && activeScript && (
-        <>
-          {scriptFiles.length > 1 && (
-            <div className="lintbar">
-              {scriptFiles.map((f) => (
-                <button
-                  key={f.part}
-                  className={`btn btn--small${f.part === part ? " " : ""}`}
-                  data-part-active={f.part === part}
-                  onClick={() => setPart(f.part ?? 1)}
-                >
-                  Part {f.part}
-                </button>
-              ))}
-            </div>
-          )}
-          <ScriptReader md={activeScript.content} folder={folder} />
-        </>
+      <TabsContent value="script">
+        {scriptFiles.length > 1 && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {scriptFiles.map((f) => (
+              <Button
+                key={f.part}
+                variant={f.part === part ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPart(f.part ?? 1)}
+              >
+                Part {f.part}
+              </Button>
+            ))}
+          </div>
+        )}
+        <motion.div
+          key={activeScript?.file ?? "script"}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
+          {activeScript && <ScriptReader md={activeScript.content} folder={folder} canLint={canLint} />}
+        </motion.div>
+      </TabsContent>
+
+      {promptsFile && (
+        <TabsContent value="prompts">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <PromptsView md={promptsFile.content} />
+          </motion.div>
+        </TabsContent>
       )}
 
-      {tab === "prompts" && promptsFile && <PromptsView md={promptsFile.content} />}
-      {tab === "pipeline" && pipelineFile && <PipelineView md={pipelineFile.content} />}
-    </div>
+      {pipelineFile && (
+        <TabsContent value="pipeline">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <PipelineView md={pipelineFile.content} />
+          </motion.div>
+        </TabsContent>
+      )}
+    </Tabs>
   );
 }

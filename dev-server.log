@@ -1,0 +1,246 @@
+npm notice run studio@0.1.0 dev
+npm notice run next dev
+▲ Next.js 16.3.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.1.146.33:3000
+- Environments: .env.local
+✓ Ready in 1042ms
+✓ Running next.config.ts took 76ms
+
+⨯ Error: Attempted to call createMotionComponent() from the server but createMotionComponent is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.
+    at Home (app\page.tsx:42:15)
+  40 |   return (
+  41 |     <div className="space-y-7">
+> 42 |       <motion.div
+     |               ^
+  43 |         initial={{ opacity: 0, y: -14 }}
+  44 |         animate={{ opacity: 1, y: 0 }}
+  45 |         transition={{ duration: 0.45, ease: "easeOut" }} {
+  digest: '1294235892'
+}
+ GET / 500 in 1680ms (next.js: 329ms, application-code: 1351ms)
+⨯ Error: Attempted to call createMotionComponent() from the server but createMotionComponent is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.
+    at Home (app\page.tsx:42:15)
+  40 |   return (
+  41 |     <div className="space-y-7">
+> 42 |       <motion.div
+     |               ^
+  43 |         initial={{ opacity: 0, y: -14 }}
+  44 |         animate={{ opacity: 1, y: 0 }}
+  45 |         transition={{ duration: 0.45, ease: "easeOut" }} {
+  digest: '1294235892'
+}
+ GET / 500 in 167ms (next.js: 4ms, application-code: 163ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '2504833968'
+}
+ GET / 500 in 703ms (next.js: 30ms, application-code: 673ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '2504833968'
+}
+ GET / 500 in 208ms (next.js: 12ms, application-code: 196ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '2982505989'
+}
+ GET /board 500 in 224ms (next.js: 36ms, application-code: 188ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '891421317'
+}
+ GET /tracker 500 in 221ms (next.js: 39ms, application-code: 182ms)
+ GET /packaging 200 in 432ms (next.js: 277ms, application-code: 155ms)
+ GET /new 200 in 90ms (next.js: 30ms, application-code: 60ms)
+ GET /story/002 200 in 1515ms (next.js: 1360ms, application-code: 154ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '2504833968'
+}
+ GET / 500 in 204ms (next.js: 12ms, application-code: 192ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '2982505989'
+}
+ GET /board 500 in 174ms (next.js: 11ms, application-code: 164ms)
+⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at ignore-listed frames {
+  digest: '891421317'
+}
+ GET /tracker 500 in 146ms (next.js: 11ms, application-code: 135ms)
+⨯ ./app/page.tsx:46:7
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m44 |[0m         animate={{ opacity: [35m1[0m, y: [35m0[0m }}
+  [90m45 |[0m         transition={{ duration: [35m0.45[0m, ease: [32m"easeOut"[0m }}
+[31m[1m>[0m [90m46 |[0m       >
+  [90m   |[0m       [31m[1m^[0m
+  [90m47 |[0m         <div className=[32m"flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-n...[0m
+  [90m48 |[0m           <[33mSparkles[0m className=[32m"size-3.5 text-brass-400"[0m />
+  [90m49 |[0m           [33mProduction[0m binder · {stories.length} {stories.length === [35m1[0m ? [32m"story"[0m : [32m"stories"[0m...
+
+Parsing ecmascript source code failed
+
+
+
+./app/page.tsx:76:9
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m74 |[0m           animate=[32m"show"[0m
+  [90m75 |[0m           className=[32m"grid gap-4 sm:grid-cols-2 lg:grid-cols-3"[0m
+[31m[1m>[0m [90m76 |[0m         >
+  [90m   |[0m         [31m[1m^[0m
+  [90m77 |[0m           {stories.map((s) => {
+  [90m78 |[0m             [36mconst[0m stage = stageMap.get(s.number) ?? [32m"scripted"[0m;
+  [90m79 |[0m             [36mconst[0m entity = tracker.entities.find((e) => e.episode.includes(s.title.split([32m"...[0m
+
+Parsing ecmascript source code failed
+
+
+
+./app/page.tsx:81:73
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m79 |[0m ...acker.entities.find((e) => e.episode.includes(s.title.split([32m"—"[0m)[[35m0[0m].trim()));
+  [90m80 |[0m ...
+[31m[1m>[0m [90m81 |[0m ....number} variants={item} className=[32m"h-full"[0m>
+  [90m   |[0m                                               [31m[1m^[0m
+  [90m82 |[0m ...
+  [90m83 |[0m ...[32mry/[0m${s.number[32m}`[0m}
+  [90m84 |[0m ...[32mgroup block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 fo...[0m
+
+Parsing ecmascript source code failed
+
+
+ GET / 500 in 1122ms (next.js: 948ms, application-code: 174ms)
+⨯ ./app/board/page.tsx:30:110
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m28 |[0m ...
+  [90m29 |[0m ...
+[31m[1m>[0m [90m30 |[0m ...: [35m1[0m, y: [35m0[0m }} transition={{ duration: [35m0.4[0m }}>
+  [90m   |[0m                                               [31m[1m^[0m
+  [90m31 |[0m ...[32might-400"[0m>
+  [90m32 |[0m ...r row
+  [90m33 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+ GET /board 500 in 30ms (next.js: 19ms, application-code: 11ms)
+⨯ ./app/tracker/page.tsx:24:110
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m22 |[0m ...
+  [90m23 |[0m ...
+[31m[1m>[0m [90m24 |[0m ...: [35m1[0m, y: [35m0[0m }} transition={{ duration: [35m0.4[0m }}>
+  [90m   |[0m                                               [31m[1m^[0m
+  [90m25 |[0m ...[32might-400"[0m>episode_tracker_v2.md · live [36mfrom[0m the binder</div>
+  [90m26 |[0m ...्रैकर</h1>
+  [90m27 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+
+./app/tracker/page.tsx:33:7
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m31 |[0m         animate={{ opacity: [35m1[0m, y: [35m0[0m }}
+  [90m32 |[0m         transition={{ delay: [35m0.08[0m, duration: [35m0.4[0m }}
+[31m[1m>[0m [90m33 |[0m       >
+  [90m   |[0m       [31m[1m^[0m
+  [90m34 |[0m         <[33mCard[0m>
+  [90m35 |[0m           <[33mCardContent[0m className=[32m"p-0"[0m>
+  [90m36 |[0m             <div className=[32m"border-b border-night-700 px-5 py-3 text-xs font-bold uppercas...[0m
+
+Parsing ecmascript source code failed
+
+
+
+./app/tracker/page.tsx:89:7
+Error: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m87 |[0m         animate={{ opacity: [35m1[0m, y: [35m0[0m }}
+  [90m88 |[0m         transition={{ delay: [35m0.16[0m, duration: [35m0.4[0m }}
+[31m[1m>[0m [90m89 |[0m       >
+  [90m   |[0m       [31m[1m^[0m
+  [90m90 |[0m         <[33mCard[0m>
+  [90m91 |[0m           <[33mCardContent[0m className=[32m"p-0"[0m>
+  [90m92 |[0m             <div className=[32m"flex items-center gap-2 border-b border-night-700 px-5 py-3 te...[0m
+
+Parsing ecmascript source code failed
+
+
+ GET /tracker 500 in 27ms (next.js: 15ms, application-code: 11ms)
+ GET /story/001 500 in 18ms (next.js: 7ms, application-code: 11ms)
+ GET / 200 in 206ms (next.js: 14ms, application-code: 192ms)
+ GET /board 200 in 210ms (next.js: 22ms, application-code: 188ms)
+ GET /tracker 200 in 173ms (next.js: 13ms, application-code: 160ms)
+ GET /story/002 200 in 343ms (next.js: 220ms, application-code: 123ms)
+ GET /packaging 200 in 144ms (next.js: 4ms, application-code: 140ms)
+ GET /new 200 in 63ms (next.js: 4ms, application-code: 59ms)
+ GET / 200 in 193ms (next.js: 11ms, application-code: 182ms)
+ GET /board 200 in 169ms (next.js: 13ms, application-code: 157ms)
+ GET /tracker 200 in 118ms (next.js: 11ms, application-code: 107ms)
+ GET /story/002 200 in 309ms (next.js: 214ms, application-code: 95ms)
+ GET /story/002 200 in 344ms (next.js: 223ms, application-code: 121ms)
+ GET / 200 in 145ms (next.js: 13ms, application-code: 132ms)
+ GET /story/002 200 in 347ms (next.js: 254ms, application-code: 93ms)
+[browser] Encountered two children with the same key, `S1-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S1-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S2-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S3-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S4-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `S5-F2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+ GET /new 200 in 23ms (next.js: 5ms, application-code: 18ms)
+ GET /tracker 200 in 49ms (next.js: 3ms, application-code: 46ms)
+ GET /packaging 200 in 115ms (next.js: 9ms, application-code: 106ms)
+ GET / 200 in 142ms (next.js: 8ms, application-code: 134ms)
+ POST /api/sync 200 in 300ms (next.js: 100ms, application-code: 200ms)
+ GET / 200 in 137ms (next.js: 3ms, application-code: 134ms)
+ GET /board 200 in 155ms (next.js: 6ms, application-code: 149ms)
+ POST /api/stage 200 in 113ms (next.js: 45ms, application-code: 68ms)
+ POST /api/stage 200 in 46ms (next.js: 2ms, application-code: 43ms)
+ POST /api/stage 200 in 45ms (next.js: 3ms, application-code: 43ms)
+ POST /api/stage 200 in 49ms (next.js: 2ms, application-code: 47ms)
+ POST /api/stage 200 in 43ms (next.js: 2ms, application-code: 40ms)
+ GET / 200 in 127ms (next.js: 3ms, application-code: 124ms)
+ GET / 200 in 181ms (next.js: 12ms, application-code: 169ms)
+ GET / 200 in 146ms (next.js: 11ms, application-code: 134ms)
+ POST /api/sync 500 in 14ms (next.js: 8ms, application-code: 6ms)
+ GET / 200 in 163ms (next.js: 14ms, application-code: 149ms)
+ POST /api/sync 200 in 156ms (next.js: 11ms, application-code: 145ms)
+ GET /api/stories 200 in 112ms (next.js: 40ms, application-code: 72ms)
+ GET / 200 in 140ms (next.js: 3ms, application-code: 137ms)
+✓ Compiled in 53ms
+ GET / 200 in 162ms (next.js: 3ms, application-code: 159ms)
+✓ Compiled in 120ms
+ GET / 200 in 142ms (next.js: 6ms, application-code: 136ms)
+ GET / 200 in 145ms (next.js: 3ms, application-code: 142ms)

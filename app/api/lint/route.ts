@@ -3,6 +3,7 @@ import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs";
 import { LINT_SCRIPT, PY_EXE, SCRIPTS_DIR } from "@/lib/file-source";
+import { lintAvailable } from "@/lib/lint-availability";
 import { logLintRun } from "@/lib/lint-runs";
 
 export const runtime = "nodejs";
@@ -69,6 +70,14 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { ok: false, error: "runtime required: 60s|90s|180s|5min|8min|10min|12min" },
       { status: 400 }
+    );
+  }
+
+  // deployed environments have no Python linter — refuse clearly instead of a confusing 500
+  if (!lintAvailable()) {
+    return NextResponse.json(
+      { ok: false, error: "TTS lint is local-only — run the studio locally where the binder and Python linter exist." },
+      { status: 409 }
     );
   }
 
