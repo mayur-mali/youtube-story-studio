@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# मयाजाल स्टूडियो — Mayajaal Studio
 
-## Getting Started
+Production dashboard for the **Mayajaal Duniya** channel. Reads the same binder files you
+already use (`scripts/NNN_title/`, `episode_tracker_v2.md`) — the files stay the source of
+truth, the studio is the view + tools on top.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd studio
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+First time: copy `.env.example` → `.env.local` and set `PY_EXE` to your python.exe full path.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What each page does
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Page | What |
+|---|---|
+| `/` Stories | Ledger of every `scripts/NNN_title/` folder with stage stamps, pulled from the tracker |
+| `/story/001` | Tabbed case file: **Script** (paper reader, scene-wise, with cues styled) + **Run TTS lint** button with stamped PASS/FAIL verdict + findings list · **Prompts** tab: every reference sheet and frame with **one-click copy** · **Pipeline** tab |
+| `/tracker` | Episode log + entity registry, live from `episode_tracker_v2.md` |
+| `/new` | Paste a script → pick runtime → lint inline → **Save to binder** (auto-numbers the folder) |
 
-## Learn More
+## Linter
 
-To learn more about Next.js, take a look at the following resources:
+The studio shells out to the same `tts_linter.py` you run by hand — one QA brain, two doors:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# by hand
+python tts_linter.py scripts/001_aam_ka_ped/001_script.md 90s
+# or just click "Run TTS lint" in the studio
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## MongoDB Atlas (Phase 2 — live)
 
-## Deploy on Vercel
+Storage is now Mongo-backed. The markdown binder stays as the **seed/backup format**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `.env.local` → `MONGODB_URI=mongodb+srv://user:pass@cluster/dbname` (db name comes from the URI path)
+- Collections: `stories`, `scripts` (scripts + pipeline + prompts + packaging), `tracker` (episode log + entities as one doc), `lintRuns`
+- First app hit auto-seeds Mongo from `scripts/NNN_*/` + `episode_tracker_v2.md` (once per process, idempotent)
+- `POST /api/sync` forces a re-pull from files (files win, Mongo file-derived docs replaced)
+- Stage moves, saves and packaging kits write Mongo first, then best-effort markdown backup
+- Lint runs are logged to `lintRuns` (best-effort)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Server-side paths resolve to the project root (`../scripts`, `../tts_linter.py`) — keep the studio inside this folder.
+- `PY_EXE` is needed because the Windows Store python stub intercepts bare `python`.
